@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public GameManager gameManager;
+
     [SerializeField] int movementSpeed;
 
     private float h;
     private float v;
     private bool isHorizontal;
     private Vector3 directionVec;
-
-    Rigidbody2D rigid;
-    Animator animator;
+    private GameObject scannedObject;
+    private Rigidbody2D rigid;
+    private Animator animator;
 
     private void Awake()
     {
@@ -23,13 +25,13 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        h = Input.GetAxisRaw("Horizontal");
-        v = Input.GetAxisRaw("Vertical");
+        h = gameManager.isScanning ? 0 : Input.GetAxisRaw("Horizontal");
+        v = gameManager.isScanning ? 0 : Input.GetAxisRaw("Vertical");
 
-        bool hDown = Input.GetButtonDown("Horizontal");
-        bool vDown = Input.GetButtonDown("Vertical");
-        bool hUp = Input.GetButtonUp("Horizontal");
-        bool vUp = Input.GetButtonUp("Vertical");
+        bool hDown = gameManager.isScanning ? false : Input.GetButtonDown("Horizontal");
+        bool vDown = gameManager.isScanning ? false : Input.GetButtonDown("Vertical");
+        bool hUp = gameManager.isScanning ? false : Input.GetButtonUp("Horizontal");
+        bool vUp = gameManager.isScanning ? false : Input.GetButtonUp("Vertical");
 
         if (hDown)
             isHorizontal = true;
@@ -52,6 +54,7 @@ public class Player : MonoBehaviour
         else
             animator.SetBool("directionChanged", false);
 
+        //direction
         if (vDown && v == 1)
             directionVec = Vector3.up;
         else if (vDown && v == -1)
@@ -61,6 +64,11 @@ public class Player : MonoBehaviour
         else if (hDown && h == -1)
             directionVec = Vector3.left;
 
+        //scan object
+        if (Input.GetButtonDown("Jump") && scannedObject != null)
+        {
+            gameManager.Scan(scannedObject);
+        }
     }
 
     void FixedUpdate()
@@ -68,7 +76,18 @@ public class Player : MonoBehaviour
         Vector2 moveVec = isHorizontal ? new Vector2(h, 0) : new Vector2(0, v);
         rigid.velocity = moveVec * movementSpeed;
 
-        Debug.DrawRay(transform.position, directionVec, Color.red);
+        Debug.DrawRay(transform.position, directionVec * 0.7f, Color.green);
+        RaycastHit2D rayHit = Physics2D.Raycast(rigid.position, directionVec, 0.7f, LayerMask.GetMask("Object"));
+
+        if (rayHit.collider)
+        {
+            scannedObject = rayHit.collider.gameObject;
+        }
+        else
+        {
+            scannedObject = null;
+        }
+
     }
 
     
