@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
     private float h;
     private float v;
     private bool isHorizontal;
+    private Vector3 directionVec;
 
     Rigidbody2D rigid;
     Animator animator;
@@ -51,12 +52,23 @@ public class Player : MonoBehaviour
         else
             animator.SetBool("directionChanged", false);
 
+        if (vDown && v == 1)
+            directionVec = Vector3.up;
+        else if (vDown && v == -1)
+            directionVec = Vector3.down;
+        else if (hDown && h == 1)
+            directionVec = Vector3.right;
+        else if (hDown && h == -1)
+            directionVec = Vector3.left;
+
     }
 
     void FixedUpdate()
     {
         Vector2 moveVec = isHorizontal ? new Vector2(h, 0) : new Vector2(0, v);
         rigid.velocity = moveVec * movementSpeed;
+
+        Debug.DrawRay(transform.position, directionVec, Color.red);
     }
 
     
