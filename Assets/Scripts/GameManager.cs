@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,10 +10,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] Text dialogText;
     [SerializeField] GameObject dialogPanel;
 
+    [Header("Managers")]
+    [SerializeField] DialogManager dialogManager;
+
     private GameObject scannedObject;
 
     public bool isScanning;
-
+    public int dialogIdx;
 
     public void Scan(GameObject scannedObj)
     {
@@ -24,7 +28,8 @@ public class GameManager : MonoBehaviour
         {
             isScanning = true;
             scannedObject = scannedObj;
-            dialogText.text = $"This is: {scannedObject.name}";
+            ObjData objData = scannedObject.GetComponent<ObjData>();
+            Talk(objData.id, objData.isNPC);
         }
 
         dialogPanel.SetActive(isScanning);
@@ -32,4 +37,16 @@ public class GameManager : MonoBehaviour
 
     }
 
+    private void Talk(int id, bool isNPC)
+    {
+        string dialog = dialogManager.GetDialog(id, dialogIdx);
+        if (isNPC)
+        {
+            dialogText.text = dialog;
+        }
+        else
+        {
+            dialogText.text = dialog;
+        }
+    }
 }
