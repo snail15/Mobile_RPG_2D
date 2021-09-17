@@ -13,11 +13,17 @@ public class GameManager : MonoBehaviour
 
     [Header("Managers")]
     [SerializeField] DialogManager dialogManager;
+    [SerializeField] QuestManager questManager;
 
     private GameObject scannedObject;
 
     public bool isScanning;
     public int dialogIdx;
+
+    private void Start()
+    {
+        Debug.Log(questManager.CheckQuest());
+    }
 
     public void Scan(GameObject scannedObj)
     {
@@ -30,12 +36,14 @@ public class GameManager : MonoBehaviour
 
     private void Talk(int id, bool isNPC)
     {
-        string dialog = dialogManager.GetDialog(id, dialogIdx);
+        int questTalkIndex = questManager.GetQuestTalkIndex(id);
+        string dialog = dialogManager.GetDialog(id + questTalkIndex, dialogIdx);
         
         if (dialog == null)
         {
             isScanning = false;
             dialogIdx = 0;
+            Debug.Log(questManager.CheckQuest(id));
             return;
         }
 
