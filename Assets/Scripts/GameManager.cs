@@ -8,14 +8,17 @@ public class GameManager : MonoBehaviour
 {
     [Header("UI Components")]
     [SerializeField] Text dialogText;
-    [SerializeField] GameObject dialogPanel;
+    [SerializeField] Animator dialogPanel;
     [SerializeField] Image portrait;
+    [SerializeField] Sprite prevPortrait;
+    [SerializeField] Animator portraitAnim;
 
     [Header("Managers")]
     [SerializeField] DialogManager dialogManager;
     [SerializeField] QuestManager questManager;
 
     private GameObject scannedObject;
+    
 
     public bool isScanning;
     public int dialogIdx;
@@ -31,7 +34,7 @@ public class GameManager : MonoBehaviour
         ObjData objData = scannedObject.GetComponent<ObjData>();
         Talk(objData.id, objData.isNPC);
 
-        dialogPanel.SetActive(isScanning);
+        dialogPanel.SetBool("isShowing", isScanning);
     }
 
     private void Talk(int id, bool isNPC)
@@ -53,6 +56,13 @@ public class GameManager : MonoBehaviour
             dialogText.text = splitTxt[0];
             portrait.sprite = dialogManager.GetPortait(id, int.Parse(splitTxt[1]));
             portrait.color = new Color(1, 1, 1, 1);
+            if (prevPortrait != portrait.sprite)
+            {
+                portraitAnim.SetTrigger("doEffect");
+                prevPortrait = portrait.sprite;
+            }
+                
+            
         }
         else
         {

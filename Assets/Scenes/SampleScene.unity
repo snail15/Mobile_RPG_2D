@@ -2536,8 +2536,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialogText: {fileID: 67067775}
-  dialogPanel: {fileID: 1093431304}
+  dialogPanel: {fileID: 1093431308}
   portrait: {fileID: 2010317231}
+  prevPortrait: {fileID: 0}
+  portraitAnim: {fileID: 2010317234}
   dialogManager: {fileID: 574582708}
   questManager: {fileID: 489320277}
   isScanning: 0
@@ -2662,13 +2664,14 @@ GameObject:
   - component: {fileID: 1093431305}
   - component: {fileID: 1093431307}
   - component: {fileID: 1093431306}
+  - component: {fileID: 1093431308}
   m_Layer: 5
   m_Name: DialogPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1093431305
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2688,7 +2691,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 20}
+  m_AnchoredPosition: {x: 0, y: -800}
   m_SizeDelta: {x: -40, y: 300}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1093431306
@@ -2729,6 +2732,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1093431304}
   m_CullTransparentMesh: 1
+--- !u!95 &1093431308
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1093431304}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 458c54dd08e9c034eba973f0da147321, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1144539336
 GameObject:
   m_ObjectHideFlags: 0
@@ -7421,6 +7443,7 @@ GameObject:
   - component: {fileID: 2010317233}
   - component: {fileID: 2010317232}
   - component: {fileID: 2010317231}
+  - component: {fileID: 2010317234}
   m_Layer: 5
   m_Name: Portrait
   m_TagString: Untagged
@@ -7485,3 +7508,22 @@ RectTransform:
   m_AnchoredPosition: {x: -45, y: 300}
   m_SizeDelta: {x: 141.66663, y: 191.66667}
   m_Pivot: {x: 1, y: 0}
+--- !u!95 &2010317234
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2010317230}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: eacdd890a425de8468eb31c2f972f50b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
