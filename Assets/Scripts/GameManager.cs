@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     [Header("UI Components")]
-    [SerializeField] Text dialogText;
+    [SerializeField] TypeEffect typeEffect;
     [SerializeField] Animator dialogPanel;
     [SerializeField] Image portrait;
     [SerializeField] Sprite prevPortrait;
@@ -39,8 +39,20 @@ public class GameManager : MonoBehaviour
 
     private void Talk(int id, bool isNPC)
     {
-        int questTalkIndex = questManager.GetQuestTalkIndex(id);
-        string dialog = dialogManager.GetDialog(id + questTalkIndex, dialogIdx);
+        int questTalkIndex = 0;
+        string dialog = string.Empty;
+
+        if (typeEffect.isAnimating)
+        {
+            typeEffect.SetMsg(string.Empty);
+            return;
+        }
+        else
+        {
+            questTalkIndex = questManager.GetQuestTalkIndex(id);
+            dialog = dialogManager.GetDialog(id + questTalkIndex, dialogIdx);
+        }
+        
         
         if (dialog == null)
         {
@@ -53,7 +65,7 @@ public class GameManager : MonoBehaviour
         if (isNPC)
         {
             string[] splitTxt = dialog.Split(':');
-            dialogText.text = splitTxt[0];
+            typeEffect.SetMsg(splitTxt[0]);
             portrait.sprite = dialogManager.GetPortait(id, int.Parse(splitTxt[1]));
             portrait.color = new Color(1, 1, 1, 1);
             if (prevPortrait != portrait.sprite)
@@ -66,7 +78,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            dialogText.text = dialog;
+            typeEffect.SetMsg(dialog);
             portrait.color = new Color(1, 1, 1, 0);
         }
         isScanning = true;
