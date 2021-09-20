@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] Image portrait;
     [SerializeField] Sprite prevPortrait;
     [SerializeField] Animator portraitAnim;
+    [SerializeField] GameObject menuSet;
+    [SerializeField] Text questText;
 
     [Header("Managers")]
     [SerializeField] DialogManager dialogManager;
@@ -25,7 +27,20 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log(questManager.CheckQuest());
+        questText.text = questManager.CheckQuest();
+    }
+
+    private void Update()
+    {
+       
+        if (Input.GetButtonDown("Cancel"))
+        {
+            if (menuSet.activeSelf)
+                menuSet.SetActive(false);
+            else
+                menuSet.SetActive(true);
+        }
+            
     }
 
     public void Scan(GameObject scannedObj)
@@ -35,6 +50,11 @@ public class GameManager : MonoBehaviour
         Talk(objData.id, objData.isNPC);
 
         dialogPanel.SetBool("isShowing", isScanning);
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 
     private void Talk(int id, bool isNPC)
@@ -58,7 +78,7 @@ public class GameManager : MonoBehaviour
         {
             isScanning = false;
             dialogIdx = 0;
-            Debug.Log(questManager.CheckQuest(id));
+            questText.text = questManager.CheckQuest(id);
             return;
         }
 
