@@ -19,6 +19,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] DialogManager dialogManager;
     [SerializeField] QuestManager questManager;
 
+    [Header("For Save")]
+    [SerializeField] GameObject player;
+
     private GameObject scannedObject;
     
 
@@ -27,6 +30,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+
+        LoadGame();
         questText.text = questManager.CheckQuest();
     }
 
@@ -50,6 +55,34 @@ public class GameManager : MonoBehaviour
         Talk(objData.id, objData.isNPC);
 
         dialogPanel.SetBool("isShowing", isScanning);
+    }
+
+    public void SaveGame()
+    {
+        PlayerPrefs.SetFloat("PlayerX", player.transform.position.x);
+        PlayerPrefs.SetFloat("PlayerY", player.transform.position.y);
+        PlayerPrefs.SetInt("QuestId", questManager.questId);
+        PlayerPrefs.SetInt("QuestActionIndex", questManager.questOrderIdx);
+        PlayerPrefs.Save();
+
+        menuSet.SetActive(false);
+    }
+
+    public void LoadGame()
+    {
+        if (!PlayerPrefs.HasKey("PlayerX"))
+            return;
+
+        float x = PlayerPrefs.GetFloat("PlayerX");
+        float y = PlayerPrefs.GetFloat("PlayerY");
+        int questId = PlayerPrefs.GetInt("QuestId");
+        int questOrderIdx = PlayerPrefs.GetInt("QuestActionIndex");
+
+        player.transform.position = new Vector3(x, y, -5);
+        questManager.questId = questId;
+        questManager.questOrderIdx = questOrderIdx;
+        questManager.ControlObject();
+
     }
 
     public void QuitGame()
