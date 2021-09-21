@@ -16,6 +16,20 @@ public class Player : MonoBehaviour
     private Rigidbody2D rigid;
     private Animator animator;
 
+    //Mobile Keys
+    private int upValue;
+    private int downValue;
+    private int leftValue;
+    private int rightValue;
+    private bool upDown;
+    private bool downDown;
+    private bool leftDown;
+    private bool rightDown;
+    private bool upUp;
+    private bool downUp;
+    private bool leftUp;
+    private bool rightUp;
+
     private void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
@@ -25,13 +39,14 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        h = gameManager.isScanning ? 0 : Input.GetAxisRaw("Horizontal");
-        v = gameManager.isScanning ? 0 : Input.GetAxisRaw("Vertical");
+        //PC
+        h = gameManager.isScanning ? 0 : Input.GetAxisRaw("Horizontal") + rightValue + leftValue;
+        v = gameManager.isScanning ? 0 : Input.GetAxisRaw("Vertical") + upValue + downValue;
 
-        bool hDown = gameManager.isScanning ? false : Input.GetButtonDown("Horizontal");
-        bool vDown = gameManager.isScanning ? false : Input.GetButtonDown("Vertical");
-        bool hUp = gameManager.isScanning ? false : Input.GetButtonUp("Horizontal");
-        bool vUp = gameManager.isScanning ? false : Input.GetButtonUp("Vertical");
+        bool hDown = gameManager.isScanning ? false : Input.GetButtonDown("Horizontal") || rightDown || leftDown;
+        bool vDown = gameManager.isScanning ? false : Input.GetButtonDown("Vertical") || upDown || downDown;
+        bool hUp = gameManager.isScanning ? false : Input.GetButtonUp("Horizontal") || rightUp || leftUp;
+        bool vUp = gameManager.isScanning ? false : Input.GetButtonUp("Vertical") || upUp || downUp;
 
         if (hDown)
             isHorizontal = true;
@@ -69,8 +84,18 @@ public class Player : MonoBehaviour
         {
             gameManager.Scan(scannedObject);
         }
-    }
 
+        //Mobile
+        upDown = false;
+        downDown = false;
+        leftDown = false;
+        rightDown = false;
+        upUp = false;
+        downUp = false;
+        leftUp = false;
+        rightUp = false;
+}
+    
     void FixedUpdate()
     {
         Vector2 moveVec = isHorizontal ? new Vector2(h, 0) : new Vector2(0, v);
@@ -90,5 +115,60 @@ public class Player : MonoBehaviour
 
     }
 
-    
+    public void ButtonDown(string type)
+    {
+        switch (type)
+        {
+            case "U":
+                upValue = 1;
+                upDown = true;
+                break;
+            case "D":
+                downValue = -1;
+                downDown = true;
+                break;
+            case "L":
+                leftValue = -1;
+                leftDown = true;
+                break;
+            case "R":
+                rightValue = 1;
+                rightDown = true;
+                break;
+            case "A":
+                if (scannedObject != null)
+                {
+                    gameManager.Scan(scannedObject);
+                }
+                break;
+            case "C":
+                gameManager.SubMenuActive();
+                break;
+
+        }
+    }
+    public void ButtonUp(string type)
+    {
+        switch (type)
+        {
+            case "U":
+                upValue = 0;
+                upUp = true;
+                break;
+            case "D":
+                downValue = 0;
+                downUp = true;
+                break;
+            case "L":
+                leftValue = 0;
+                leftUp = true;
+                break;
+            case "R":
+                rightValue = 0;
+                rightUp = true;
+                break;
+        }
+    }
+
+
 }

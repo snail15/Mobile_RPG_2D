@@ -9,7 +9,7 @@ public class TypeEffect : MonoBehaviour
     [SerializeField] string targetMessage;
     [SerializeField] GameObject endCursor;
     
-    private AudioSource audio;
+    private AudioSource audioSrc;
     private Text msgText;
     private int idx;
     
@@ -18,7 +18,7 @@ public class TypeEffect : MonoBehaviour
     private void Awake()
     {
         msgText = GetComponent<Text>();
-        audio = GetComponent<AudioSource>();
+        audioSrc = GetComponent<AudioSource>();
     }
 
     public void SetMsg(string msg)
@@ -59,7 +59,7 @@ public class TypeEffect : MonoBehaviour
 
 
         if (targetMessage[idx] != ' ' || targetMessage[idx] != '.')
-            audio.Play();
+            audioSrc.Play();
 
         msgText.text += targetMessage[idx];
         idx += 1;
